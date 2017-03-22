@@ -88,7 +88,7 @@ public class KakaoController {
 		HashMap<String, Object> message = new HashMap<String,Object>();
 		
 		message.put("text", user_key + content);
-		result.put("message", message);
+		result.put("message", message); 
 		
 		return result;
 	}
