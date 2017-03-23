@@ -27,6 +27,17 @@ public class KakaoDaoImpl implements KakaoDao {
 	
 
 	/* (non-Javadoc)
+	 * @see com.thekstudio.autokakaotalk.service.kakao.KakaoDao#getMainButtons(java.util.HashMap)
+	 */
+	public List<HashMap<String, Object>> getMainButtons() {
+		try {
+			return sqlSession.getMapper(KakaoMapper.class).getMainButtons();
+		} catch (Exception e) {
+			return new ArrayList<HashMap<String, Object>>();
+		}
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.thekstudio.autokakaotalk.service.kakao.KakaoDao#getMessage(java.util.HashMap)
 	 */
 	public HashMap<String, Object> getMessage(HashMap<String, Object> param) {

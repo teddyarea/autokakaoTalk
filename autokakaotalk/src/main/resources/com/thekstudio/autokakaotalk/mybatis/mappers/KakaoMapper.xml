@@ -3,18 +3,18 @@
 
 <mapper namespace="com.thekstudio.autokakaotalk.mybatis.mappers.KakaoMapper">
 	<!-- test -->
-	<select id="getMainKeyboard" parameterType="hashmap" resultType="hashmap">
+	<select id="getMainButtons" parameterType="hashmap" resultType="hashmap">
 		select
 			CONTENT
-		from KAKAO_CONTENT
+		from KAKAO_KEYBOARD
 		where GUBUN = 'MAIN'
 	</select>
 
 	<!-- test -->
 	<select id="getMessage" parameterType="hashmap" resultType="hashmap">
 		select
-			MESSAGE
-			,TYPE
+			TEXT
+			,PHOTO
 		from KAKAO_MESSAGE
 		where CONTENT like #{content}
 	</select>

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,15 +37,26 @@ public class KakaoController {
 	@RequestMapping(value = "/keyboard", method = RequestMethod.GET)
 	public HashMap<String, Object> keyboard(){
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
-		ArrayList<String> list = new ArrayList<String>();
 		
-		list.add("#오늘의말씀");
-		list.add("#성당안내");
-		list.add("#오시는길");
-
-		hashMap.put("type", "buttons");
-		hashMap.put("buttons", list);
+		ArrayList<String> mainButtons = new ArrayList<String>(); 
+		List<HashMap<String, Object>> list;
 		
+		try {
+			list = kakaoService.getMainButtons();
+			
+			for(int i = 0; i < list.size(); i++){
+				mainButtons.add(list.get(i).get("CONTENT").toString());
+			}
+			
+			hashMap.put("type", "buttons");
+			hashMap.put("buttons", mainButtons);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		logger.info("{}", hashMap);
 		
@@ -102,24 +114,21 @@ public class KakaoController {
 		try {
 			HashMap<String, Object> kakaoMap = kakaoService.getMessage(param);
 			
-			if(kakaoMap.get("TYPE").equals("buttons")){
-				
+			if(kakaoMap.get("TEXT") != null){
+				message.put("text", kakaoMap.get("TEXT"));
 			}
-			kakaoMap.get("MESSAGE");
+			
+			if(kakaoMap.get("PHOTO") != null){
+				message.put("photo", kakaoMap.get("PHOTO"));
+			}
+			
+			result.put("message", message);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		if(param.get("content").equals("#오늘의말씀")){
-			message.put("text", "테스트테스트");
-			result.put("message", message); 
-		}else{
-			message.put("text", "");
-			result.put("message", message);
 		}
 
 		return result;

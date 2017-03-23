@@ -25,6 +25,13 @@ public class KakaoServiceImpl implements KakaoService{
 	private KakaoDao kakaoDao;
 	
 	/* (non-Javadoc)
+	 * @see com.thekstudio.autokakaotalk.service.kakao.KakaoService#getMainButtons(java.util.HashMap)
+	 */
+	public List<HashMap<String, Object>> getMainButtons() throws IOException, SQLException{
+		return this.kakaoDao.getMainButtons();
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.thekstudio.autokakaotalk.service.kakao.KakaoService#getMessage(java.util.HashMap)
 	 */
 	public HashMap<String, Object> getMessage(HashMap<String, Object> param) throws IOException, SQLException{
