@@ -24,8 +24,10 @@ public class KakaoServiceImpl implements KakaoService{
 	@Autowired
 	private KakaoDao kakaoDao;
 	
-	//  최근 90일 이내의 아파트 실거래가 4건 검색
-	public List<HashMap<String, Object>> getDealPriceList(HashMap<String, Object> param) throws IOException, SQLException{
-		return this.kakaoDao.getDealPriceList(param);
+	/* (non-Javadoc)
+	 * @see com.thekstudio.autokakaotalk.service.kakao.KakaoService#getMessage(java.util.HashMap)
+	 */
+	public HashMap<String, Object> getMessage(HashMap<String, Object> param) throws IOException, SQLException{
+		return this.kakaoDao.getMessage(param);
 	}
 }

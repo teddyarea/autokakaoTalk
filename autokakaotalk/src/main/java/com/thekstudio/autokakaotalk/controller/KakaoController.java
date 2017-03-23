@@ -2,6 +2,7 @@ package com.thekstudio.autokakaotalk.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,17 +12,23 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.thekstudio.autokakaotalk.service.kakao.KakaoService;
+
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class KakaoController {
+	
+	@Autowired
+	private KakaoService	 kakaoService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(KakaoController.class);
 	
@@ -31,9 +38,9 @@ public class KakaoController {
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		ArrayList<String> list = new ArrayList<String>();
 		
-		list.add("선택1");
-		list.add("선택2");
-		list.add("선택3");
+		list.add("#오늘의말씀");
+		list.add("#성당안내");
+		list.add("#오시는길");
 
 		hashMap.put("type", "buttons");
 		hashMap.put("buttons", list);
@@ -46,7 +53,7 @@ public class KakaoController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/message", method = RequestMethod.POST)
-	public HashMap<String, Object> message(HttpServletRequest request){
+	public HashMap<String, Object> message(HttpServletRequest request) throws Exception {
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		HashMap<String, Object> message = new HashMap<String, Object>();
 		StringBuffer sb = new StringBuffer();
@@ -71,7 +78,12 @@ public class KakaoController {
 				content = json.get("content").toString();
 			}
 			
-			hashMap = messageChk(user_key, content);
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			
+			param.put("user_key", user_key);
+			param.put("content", content);
+			
+			hashMap = messageChk(param);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -83,13 +95,33 @@ public class KakaoController {
 		return hashMap;
 	}
 	
-	private HashMap<String,Object> messageChk(String user_key, String content){
+	private HashMap<String,Object> messageChk(HashMap<String, Object> param){
 		HashMap<String, Object> result = new HashMap<String,Object>();
 		HashMap<String, Object> message = new HashMap<String,Object>();
 		
-		message.put("text", user_key + content);
-		result.put("message", message); 
+		try {
+			HashMap<String, Object> kakaoMap = kakaoService.getMessage(param);
+			
+			if(kakaoMap.get("TYPE").equals("buttons")){
+				
+			}
+			kakaoMap.get("MESSAGE");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		if(param.get("content").equals("#오늘의말씀")){
+			message.put("text", "테스트테스트");
+			result.put("message", message); 
+		}else{
+			message.put("text", "");
+			result.put("message", message);
+		}
+
 		return result;
 	}
 }

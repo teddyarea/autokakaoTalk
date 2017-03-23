@@ -1,6 +1,9 @@
-<html>
-<head></head>
-<body>
-	<div></div>
-</body>
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+       
+    </head>    
+    <body>
+      
+    </body>
 </html>
