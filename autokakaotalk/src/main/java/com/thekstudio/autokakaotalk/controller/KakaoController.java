@@ -113,11 +113,24 @@ public class KakaoController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/friend", method = RequestMethod.POST)
-	public HashMap<String, Object> friend(HttpServletRequest request) throws SQLException, ParseException{
+	public HashMap<String, Object> friendAdd(HttpServletRequest request) throws SQLException, ParseException{
 		HashMap<String,Object> hashMap = new HashMap<String,Object>();
 		HashMap<String, Object> message = new HashMap<String, Object>();
 		
 		message.put("text", "친구로 추가해 주셔서 감사합니다.");
+		hashMap.put("message", message);
+		hashMap.put("keyboard", keyboard());
+		
+		return hashMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/friend", method = RequestMethod.DELETE)
+	public HashMap<String, Object> friendDelete(HttpServletRequest request) throws SQLException, ParseException{
+		HashMap<String,Object> hashMap = new HashMap<String,Object>();
+		HashMap<String, Object> message = new HashMap<String, Object>();
+		
+		message.put("text", "친구를 삭제했습니다.");
 		hashMap.put("message", message);
 		hashMap.put("keyboard", keyboard());
 		
