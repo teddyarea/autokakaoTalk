@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +107,19 @@ public class KakaoController {
 			hashMap.put("message", message);
 			hashMap.put("keyboard", keyboard());
 		}
+		
+		return hashMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/friend", method = RequestMethod.POST)
+	public HashMap<String, Object> friend(HttpServletRequest request) throws SQLException, ParseException{
+		HashMap<String,Object> hashMap = new HashMap<String,Object>();
+		HashMap<String, Object> message = new HashMap<String, Object>();
+		
+		message.put("text", "친구로 추가해 주셔서 감사합니다.");
+		hashMap.put("message", message);
+		hashMap.put("keyboard", keyboard());
 		
 		return hashMap;
 	}
