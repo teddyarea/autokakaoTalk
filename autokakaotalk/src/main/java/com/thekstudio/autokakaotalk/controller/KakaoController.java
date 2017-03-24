@@ -70,8 +70,7 @@ public class KakaoController {
 		HashMap<String, Object> message = new HashMap<String, Object>();
 		StringBuffer sb = new StringBuffer();
 		String line = null;
-		String user_key = "";
-		String content = "";
+		String user_key = null, type = null, content = "";
 		
 		BufferedReader reader;
 		try {
@@ -86,22 +85,26 @@ public class KakaoController {
 			Object obj = JSONValue.parse(jsonString);
 			JSONObject json = (JSONObject)obj;
 			if(json != null){
-				user_key = json.get("user_key").toString();
-				content = json.get("content").toString();
+				user_key 	= json.get("user_key").toString();
+				type 		= json.get("type").toString();
+				content 	= json.get("content").toString();
 			}
 			
 			HashMap<String, Object> param = new HashMap<String, Object>();
 			
 			param.put("user_key", user_key);
+			param.put("type", type);
 			param.put("content", content);
 			
 			hashMap = messageChk(param);
+			hashMap.put("keyboard", keyboard());
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			
 			message.put("text", "잘못된 명령어 입니다.");
 			hashMap.put("message", message);
+			hashMap.put("keyboard", keyboard());
 		}
 		
 		return hashMap;
